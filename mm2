@@ -110,20 +110,28 @@ returns.MouseButton1Click:Connect(function()
 	end
 end)
 
-killall.MouseButton1Click:Connect(function()
+killall.MouseButton1Click:Connect(function(plr)
+	local plrname = players.LocalPlayer
 	local cha = players.LocalPlayer.Character
 	local hum = cha:FindFirstChild("HumanoidRootPart")
 	local all = players:GetPlayers()
 	local part = cha:GetChildren()
-	for _, parts in part do
-		
-	end
+	local posbefore = hum.Position
 
 	for _, pon in all do
-		local cha2 = pon.Character
-		local torso = cha2:FindFirstChild("Torso")
-		local hum2 = cha2:FindFirstChild("HumanoidRootPart").Position
-		cha:MoveTo(hum2)
-		task.wait(1)
+		if pon.Name == plrname.Name then
+		else
+			local cha2 = pon.Character
+			local torso = cha2:FindFirstChild("Torso")
+			local hum2 = cha2:FindFirstChild("HumanoidRootPart")
+			local times = 0
+			while times ~= 5 do
+				hum.CFrame = hum2.CFrame
+				times += 1
+				task.wait(0.3)
+			end
+			task.wait(0.5)
+			cha:MoveTo(posbefore)
+		end	
 	end
 end)
