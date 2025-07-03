@@ -5,6 +5,7 @@ local returns = Instance.new("TextButton")
 local killall = Instance.new("TextButton")
 local tp = Instance.new("Frame")
 local tpbox = Instance.new("TextBox")
+local teleport = Instance.new("TextButton")
 local players = game.Players
 local saved = false
 local cha
@@ -13,6 +14,7 @@ local pos2
 local returnpos
 local ur = game:GetService("UserInputService")
 gui.Parent = players.LocalPlayer.PlayerGui
+teleport.Parent = gui
 tpbox.Parent = gui
 tp.Parent = gui
 killall.Parent = gui
@@ -20,6 +22,7 @@ delete.Parent = gui
 button.Parent = gui
 returns.Parent = gui
 button.Size = UDim2.new(0.2,0,0.2,0)
+teleport.Size = UDim2.new(0.2,0,0.2,0)
 tp.Size = UDim2.new(0.2,0,0.2,0)
 killall.Size = UDim2.new(0.2,0,0.2,0)
 button.Position = UDim2.new(0.8,0,0.4,0)
@@ -46,6 +49,11 @@ button.BackgroundTransparency = 0
 tpbox.Size = tp.Size
 tpbox.Position = tp.Position
 tpbox.TextScaled = true
+tp.BackgroundTransparency = 1
+teleport.Position = tpbox.Position + UDim2.new(0,0,-0.2,0)
+teleport.BackgroundColor = BrickColor.DarkGray()
+teleport.TextScaled = true
+teleport.Text = "Teleport"
 returns.BackgroundColor = BrickColor.Green()
 
 button.MouseButton1Click:Connect(function()
@@ -124,4 +132,13 @@ tpbox.FocusLost:Connect(function()
 			hum.CFrame = hum2.CFrame
 		end
 	end
+end)
+
+teleport.MouseButton1Click:Connect(function()
+	local player = players.LocalPlayer
+	local character = player.Character
+	character = player.Character
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+		local lookVector = hrp.CFrame.LookVector
+		hrp.CFrame = hrp.CFrame + (lookVector * 10)
 end)
