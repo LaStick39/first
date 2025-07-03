@@ -3,7 +3,8 @@ local button = Instance.new("TextButton")
 local delete = Instance.new("TextButton")
 local returns = Instance.new("TextButton")
 local killall = Instance.new("TextButton")
-local tp = Instance.new("TextButton")
+local tp = Instance.new("Frame")
+local tpbox = Instance.new("TextBox")
 local players = game.Players
 local saved = false
 local cha
@@ -12,6 +13,7 @@ local pos2
 local returnpos
 local ur = game:GetService("UserInputService")
 gui.Parent = players.LocalPlayer.PlayerGui
+tpbox.Parent = gui
 tp.Parent = gui
 killall.Parent = gui
 delete.Parent = gui
@@ -28,8 +30,6 @@ killall.Position = returns.Position + UDim2.new(-0.8,0,0,0)
 tp.Position = killall.Position + UDim2.new(0,0,-0.2,0)
 tp.BackgroundColor = BrickColor.Gray()
 killall.BackgroundColor = BrickColor.Blue()
-tp.TextScaled = true
-tp.Text = "Noclip off"
 killall.TextScaled = true
 killall.Text = "Kill all"
 returns.TextScaled = true
@@ -43,6 +43,9 @@ button.Text = "Click to save"
 button.TextScaled = true
 gui.ResetOnSpawn = false
 button.BackgroundTransparency = 0
+tpbox.Size = tp.Size
+tpbox.Position = tp.Position
+tpbox.TextScaled = true
 returns.BackgroundColor = BrickColor.Green()
 
 button.MouseButton1Click:Connect(function()
@@ -108,28 +111,17 @@ killall.MouseButton1Click:Connect(function(plr)
 	end
 end)
 local noclip = false
-tp.MouseButton1Click:Connect(function()
-	if noclip == false then
-		local cha = players.LocalPlayer.Character
-		local char = cha:GetChildren()
-		
-		for _, part in char do
-			if part:IsA("BasePart") then
-				part.CanCollide = false
-			end
+
+
+tpbox.FocusLost:Connect(function()
+	local all = players:GetPlayers()
+	local cha = players.LocalPlayer.Character
+	local hum = cha:FindFirstChild("HumanoidRootPart")
+	for _, player in all do
+		if player.DisplayName == tpbox.ContentText then
+			local cha2 = player.Character
+			local hum2 = cha2:FindFirstChild("HumanoidRootPart")
+			hum.CFrame = hum2.CFrame
 		end
-		noclip = true
-		tp.Text = "Noclip on"
-	else
-		local cha = players.LocalPlayer.Character
-		local char = cha:GetChildren()
-		for _, part in char do
-			if part:IsA("BasePart") then
-				part.CanCollide = true
-			end
-		end
-		noclip = false
-		tp.Text = "Noclip off"
 	end
 end)
-
