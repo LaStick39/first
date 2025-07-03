@@ -1,0 +1,69 @@
+local gui = Instance.new("ScreenGui")
+local button = Instance.new("TextButton")
+local delete = Instance.new("TextButton")
+local returns = Instance.new("TextButton")
+local players = game.Players
+local saved = false
+local cha
+local pos
+local pos2
+local returnpos
+gui.Parent = players.LocalPlayer.PlayerGui
+delete.Parent = gui
+button.Parent = gui
+returns.Parent = gui
+button.Size = UDim2.new(0.2,0,0.2,0)
+button.Position = UDim2.new(0.8,0,0.4,0)
+button.BackgroundColor = BrickColor.Red()
+delete.Position = button.Position + UDim2.new(0,0,0.2,0)
+returns.Position = delete.Position + UDim2.new(0,0,0.2,0)
+returns.TextScaled = true
+returns.Text = "Wait for position"
+returns.Size = UDim2.new(0.2,0,0.2,0)
+delete.TextScaled = true
+delete.Text = "Click to delete position"
+delete.Size = UDim2.new(0.2,0,0.2,0)
+delete.BackgroundColor = BrickColor.Yellow()
+button.Text = "Click to save"
+button.TextScaled = true
+gui.ResetOnSpawn = false
+button.BackgroundTransparency = 0
+returns.BackgroundColor = BrickColor.Green()
+button.MouseButton1Click:Connect(function()
+	if saved == false then
+		local locplr = players.LocalPlayer
+		cha = locplr.Character
+		pos = cha:FindFirstChild("HumanoidRootPart")
+		pos2 = pos.Position
+		button.Text = "Click to teleport"
+		print(pos2)
+		saved = true
+	else
+		local hum = cha:FindFirstChild("HumanoidRootPart")
+		local position = hum.Position
+		returnpos = position
+		cha:MoveTo(pos2)
+		print(position)
+		print(pos2)
+		returns.Text = "Return"
+	end	
+end)
+
+delete.MouseButton1Click:Connect(function()
+	if saved == true then	
+		saved = false
+		pos2 = nil
+		delete.Text = "Succes delete position"
+		button.Text = "Click to save"
+		task.wait(2)
+		delete.Text = "Click to delete Position"
+	end	
+end)
+
+returns.MouseButton1Click:Connect(function()
+	if saved == true then
+		cha:MoveTo(returnpos)
+		returns.Text = "Wait for position"
+		returnpos = nil
+	end
+end)
