@@ -8,6 +8,7 @@ local cha
 local pos
 local pos2
 local returnpos
+local ur = game:GetService("UserInputService")
 gui.Parent = players.LocalPlayer.PlayerGui
 delete.Parent = gui
 button.Parent = gui
@@ -29,6 +30,42 @@ button.TextScaled = true
 gui.ResetOnSpawn = false
 button.BackgroundTransparency = 0
 returns.BackgroundColor = BrickColor.Green()
+ur.InputBegan:Connect(function(key)
+	if key.KeyCode == Enum.KeyCode.P and saved == false then
+		local locplr = players.LocalPlayer
+		cha = locplr.Character
+		pos = cha:FindFirstChild("HumanoidRootPart")
+		pos2 = pos.Position
+		button.Text = "Click to teleport"
+		saved = true
+	end
+	if key.KeyCode == Enum.KeyCode.P and saved == true then
+		local hum = cha:FindFirstChild("HumanoidRootPart")
+		local position = hum.Position
+		returnpos = position
+		cha:MoveTo(pos2)
+		returns.Text = "Return"
+	end
+	
+	if key.KeyCode == Enum.KeyCode.L then
+		if saved == true then	
+			saved = false
+			pos2 = nil
+			delete.Text = "Succes delete position"
+			button.Text = "Click to save"
+			returns.Text = "Wait for position"
+			task.wait(2)
+			delete.Text = "Click to delete Position"
+		end	
+	end
+	if key.KeyCode == Enum.KeyCode.K then
+		if saved == true then
+			cha:MoveTo(returnpos)
+			returns.Text = "Wait for position"
+			returnpos = nil
+		end
+	end
+end)
 button.MouseButton1Click:Connect(function()
 	if saved == false then
 		local locplr = players.LocalPlayer
@@ -36,15 +73,12 @@ button.MouseButton1Click:Connect(function()
 		pos = cha:FindFirstChild("HumanoidRootPart")
 		pos2 = pos.Position
 		button.Text = "Click to teleport"
-		print(pos2)
 		saved = true
 	else
 		local hum = cha:FindFirstChild("HumanoidRootPart")
 		local position = hum.Position
 		returnpos = position
 		cha:MoveTo(pos2)
-		print(position)
-		print(pos2)
 		returns.Text = "Return"
 	end	
 end)
@@ -55,6 +89,7 @@ delete.MouseButton1Click:Connect(function()
 		pos2 = nil
 		delete.Text = "Succes delete position"
 		button.Text = "Click to save"
+		returns.Text = "Wait for position"
 		task.wait(2)
 		delete.Text = "Click to delete Position"
 	end	
