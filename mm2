@@ -114,7 +114,7 @@ tp.MouseButton1Click:Connect(function()
 		local char = cha:GetChildren()
 		
 		for _, part in char do
-			if part.Name == "Torso" or part.Name == "HumanoidRootPart" or part.Name == "Head" then
+			if part:IsA("BasePart") then
 				part.CanCollide = false
 			end
 		end
@@ -124,7 +124,7 @@ tp.MouseButton1Click:Connect(function()
 		local cha = players.LocalPlayer.Character
 		local char = cha:GetChildren()
 		for _, part in char do
-			if part.Name == "Torso" or part.Name == "HumanoidRootPart" or part.Name == "Head" then
+			if part:IsA("BasePart") then
 				part.CanCollide = true
 			end
 		end
