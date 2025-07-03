@@ -3,6 +3,7 @@ local button = Instance.new("TextButton")
 local delete = Instance.new("TextButton")
 local returns = Instance.new("TextButton")
 local killall = Instance.new("TextButton")
+local tp = Instance.new("TextButton")
 local players = game.Players
 local saved = false
 local cha
@@ -11,18 +12,24 @@ local pos2
 local returnpos
 local ur = game:GetService("UserInputService")
 gui.Parent = players.LocalPlayer.PlayerGui
+tp.Parent = gui
 killall.Parent = gui
 delete.Parent = gui
 button.Parent = gui
 returns.Parent = gui
 button.Size = UDim2.new(0.2,0,0.2,0)
+tp.Size = UDim2.new(0.2,0,0.2,0)
 killall.Size = UDim2.new(0.2,0,0.2,0)
 button.Position = UDim2.new(0.8,0,0.4,0)
 button.BackgroundColor = BrickColor.Red()
 delete.Position = button.Position + UDim2.new(0,0,0.2,0)
 returns.Position = delete.Position + UDim2.new(0,0,0.2,0)
 killall.Position = returns.Position + UDim2.new(-0.8,0,0,0)
+tp.Position = killall.Position + UDim2.new(0,0,-0.2,0)
+tp.BackgroundColor = BrickColor.Gray()
 killall.BackgroundColor = BrickColor.Blue()
+tp.TextScaled = true
+tp.Text = "Noclip off"
 killall.TextScaled = true
 killall.Text = "Kill all"
 returns.TextScaled = true
@@ -100,3 +107,29 @@ killall.MouseButton1Click:Connect(function(plr)
 		end	
 	end
 end)
+local noclip = false
+tp.MouseButton1Click:Connect(function()
+	if noclip == false then
+		local cha = players.LocalPlayer.Character
+		local char = cha:GetChildren()
+		
+		for _, part in char do
+			if part.Name == "Torso" or part.Name == "HumanoidRootPart" or part.Name == "Head" then
+				part.CanCollide = false
+			end
+		end
+		noclip = true
+		tp.Text = "Noclip on"
+	else
+		local cha = players.LocalPlayer.Character
+		local char = cha:GetChildren()
+		for _, part in char do
+			if part.Name == "Torso" or part.Name == "HumanoidRootPart" or part.Name == "Head" then
+				part.CanCollide = true
+			end
+		end
+		noclip = false
+		tp.Text = "Noclip off"
+	end
+end)
+
