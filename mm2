@@ -168,7 +168,12 @@ noclipbutton.MouseButton1Click:Connect(function()
 		noclipbutton.Text = "Noclip on"
 		for _, part in parts do
 			if part:IsA("BasePart") then
-				part.CanCollide = false
+				task.spawn(function()
+					while noclip2 == true do
+						part.CanCollide = false
+						task.wait(1)
+					end
+				end)
 			end
 		end
 	else
