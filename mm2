@@ -3,9 +3,11 @@ local button = Instance.new("TextButton")
 local delete = Instance.new("TextButton")
 local returns = Instance.new("TextButton")
 local killall = Instance.new("TextButton")
+local espbutton = Instance.new("TextButton")
 local tp = Instance.new("Frame")
 local tpbox = Instance.new("TextBox")
 local teleport = Instance.new("TextButton")
+local noclipbutton = Instance.new("TextButton")
 local players = game.Players
 local saved = false
 local cha
@@ -14,6 +16,8 @@ local pos2
 local returnpos
 local ur = game:GetService("UserInputService")
 gui.Parent = players.LocalPlayer.PlayerGui
+espbutton.Parent = gui
+noclipbutton.Parent = gui
 teleport.Parent = gui
 tpbox.Parent = gui
 tp.Parent = gui
@@ -24,15 +28,25 @@ returns.Parent = gui
 button.Size = UDim2.new(0.2,0,0.2,0)
 teleport.Size = UDim2.new(0.2,0,0.2,0)
 tp.Size = UDim2.new(0.2,0,0.2,0)
+espbutton.Size = UDim2.new(0.2,0,0.2,0)
 killall.Size = UDim2.new(0.2,0,0.2,0)
+noclipbutton.Size = UDim2.new(0.2,0,0.2,0)
 button.Position = UDim2.new(0.8,0,0.4,0)
+espbutton.Position = button.Position + UDim2.new(0,0,-0.2,0)
 button.BackgroundColor = BrickColor.Red()
 delete.Position = button.Position + UDim2.new(0,0,0.2,0)
+noclipbutton.Position = teleport.Position + UDim2.new(0,0,0.2,0)
 returns.Position = delete.Position + UDim2.new(0,0,0.2,0)
 killall.Position = returns.Position + UDim2.new(-0.8,0,0,0)
 tp.Position = killall.Position + UDim2.new(0,0,-0.2,0)
 tp.BackgroundColor = BrickColor.Gray()
+noclipbutton.BackgroundColor = BrickColor.Red()
 killall.BackgroundColor = BrickColor.Blue()
+espbutton.BackgroundColor = BrickColor.Red()
+espbutton.TextScaled = true
+espbutton.Text = "Esp off"
+noclipbutton.TextScaled = true
+noclipbutton.Text = "Noclip off"
 killall.TextScaled = true
 killall.Text = "Kill all"
 returns.TextScaled = true
@@ -55,7 +69,6 @@ teleport.BackgroundColor = BrickColor.DarkGray()
 teleport.TextScaled = true
 teleport.Text = "Teleport"
 returns.BackgroundColor = BrickColor.Green()
-
 button.MouseButton1Click:Connect(function()
 	if saved == false then
 		local locplr = players.LocalPlayer
@@ -141,4 +154,112 @@ teleport.MouseButton1Click:Connect(function()
 	local hrp = character:FindFirstChild("HumanoidRootPart")
 		local lookVector = hrp.CFrame.LookVector
 		hrp.CFrame = hrp.CFrame + (lookVector * 10)
+end)
+
+local noclip2 = false
+
+local players2 = game.Players
+
+noclipbutton.MouseButton1Click:Connect(function()
+	if noclip2 == false then
+		local parts = players2.LocalPlayer.Character:GetChildren()
+		noclipbutton.BackgroundColor = BrickColor.Green()
+		noclip2 = true
+		noclipbutton.Text = "Noclip on"
+		for _, part in parts do
+			if part:IsA("BasePart") then
+				part.CanCollide = false
+			end
+		end
+	else
+		local parts = players2.LocalPlayer.Character:GetChildren()
+		noclipbutton.BackgroundColor = BrickColor.Red()
+		noclipbutton.Text = "Noclip off"
+		noclip2 = false
+		for _, part in parts do
+			if part:IsA("BasePart") then
+				part.CanCollide = true
+			end
+		end
+	end
+end)
+
+local murder
+local highlight = Instance.new("Highlight")
+local esp = false
+espbutton.MouseButton1Click:Connect(function()
+	if esp == false then
+		local allplayers = players:GetPlayers()
+		espbutton.Text = "Esp on"
+		espbutton.BackgroundColor = BrickColor.Green()
+		esp = true
+		for _, player in allplayers do
+			local items = player.Backpack:GetChildren()
+			for _, item in items do
+				if item.Name == "ClassicSword" then
+					murder = player.Name
+				end
+			end
+			if murder == player.Name then
+				local cha = player.Character:GetChildren()
+				for _, part in cha do
+					if part:IsA("BasePart") or part:IsA("Accessory") then
+						local clone = highlight:Clone()
+						clone.Name = "Esp"
+						clone.Parent = part
+						clone.FillColor = Color3.new(1, 0.0235294, 0.0705882)
+					end
+				end
+				
+			end
+			local cha = player.Character:GetChildren()
+			for _, part in cha do
+				if murder == player.Name then
+				else
+					if part:IsA("BasePart") or part:IsA("Accessory") then
+						local clone = highlight:Clone()
+						clone.Name = "Esp"
+						clone.Parent = part
+						clone.FillColor = Color3.new(0.0784314, 1, 0.0117647)
+					end
+				end	
+			end
+		end
+	else
+		local allplayers = players:GetPlayers()
+		espbutton.Text = "Esp off"
+		espbutton.BackgroundColor = BrickColor.Red()
+		esp = false
+		for _, player in allplayers do
+			local highlight = Instance.new("Highlight")
+			local cha = player.Character:GetChildren()
+			for _, part in cha do
+				if part:IsA("BasePart") or part:IsA("Accessory") then
+					local clone = part:FindFirstChild("Esp") or part:FindFirstChild("Esp murder")
+					clone:Destroy()
+				end
+			end	
+		end
+	end
+end)
+
+players.PlayerAdded:Connect(function()
+	if esp == true then
+		local allplayers = players:GetPlayers()
+		espbutton.Text = "Esp on"
+		espbutton.BackgroundColor = BrickColor.Green()
+		esp = true
+		for _, player in allplayers do
+			local highlight = Instance.new("Highlight")
+			local cha = player.Character:GetChildren()
+			for _, part in cha do
+				if part:IsA("BasePart") or part:IsA("Accessory") then
+					local clone = highlight:Clone()
+					clone.Name = "Esp"
+					clone.Parent = part
+					clone.FillColor = Color3.new(1, 0.0196078, 0.0352941)
+				end
+			end	
+		end
+	end
 end)
