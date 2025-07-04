@@ -184,82 +184,71 @@ noclipbutton.MouseButton1Click:Connect(function()
 	end
 end)
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LP = Players.LocalPlayer
+local roles
+
+
+
 local murder
 local highlight = Instance.new("Highlight")
 local esp = false
-espbutton.MouseButton1Click:Connect(function()
-	if esp == false then
-		local allplayers = players:GetPlayers()
-		espbutton.Text = "Esp on"
-		espbutton.BackgroundColor = BrickColor.Green()
-		esp = true
-		for _, player in allplayers do
-			local items = player.Backpack:GetChildren()
-			for _, item in items do
-				if item.Name == "ClassicSword" then
-					murder = player.Name
-				end
-			end
-			if murder == player.Name then
-				local cha = player.Character:GetChildren()
-				for _, part in cha do
-					if part:IsA("BasePart") or part:IsA("Accessory") then
-						local clone = highlight:Clone()
-						clone.Name = "Esp"
-						clone.Parent = part
-						clone.FillColor = Color3.new(1, 0.0235294, 0.0705882)
-					end
-				end
-				
-			end
-			local cha = player.Character:GetChildren()
-			for _, part in cha do
-				if murder == player.Name then
-				else
-					if part:IsA("BasePart") or part:IsA("Accessory") then
-						local clone = highlight:Clone()
-						clone.Name = "Esp"
-						clone.Parent = part
-						clone.FillColor = Color3.new(0.0784314, 1, 0.0117647)
-					end
-				end	
-			end
-		end
-	else
-		local allplayers = players:GetPlayers()
-		espbutton.Text = "Esp off"
-		espbutton.BackgroundColor = BrickColor.Red()
-		esp = false
-		for _, player in allplayers do
-			local highlight = Instance.new("Highlight")
-			local cha = player.Character:GetChildren()
-			for _, part in cha do
-				if part:IsA("BasePart") or part:IsA("Accessory") then
-					local clone = part:FindFirstChild("Esp") or part:FindFirstChild("Esp murder")
-					clone:Destroy()
-				end
-			end	
-		end
-	end
-end)
 
-players.PlayerAdded:Connect(function()
-	if esp == true then
-		local allplayers = players:GetPlayers()
-		espbutton.Text = "Esp on"
-		espbutton.BackgroundColor = BrickColor.Green()
-		esp = true
-		for _, player in allplayers do
-			local highlight = Instance.new("Highlight")
-			local cha = player.Character:GetChildren()
-			for _, part in cha do
-				if part:IsA("BasePart") or part:IsA("Accessory") then
-					local clone = highlight:Clone()
-					clone.Name = "Esp"
-					clone.Parent = part
-					clone.FillColor = Color3.new(1, 0.0196078, 0.0352941)
-				end
-			end	
+
+
+
+function CreateHighlight()
+	for i, v in pairs(Players:GetChildren()) do
+		if v ~= LP and v.Character and not v.Character:FindFirstChild("Highlight") then
+			Instance.new("Highlight", v.Character)           
 		end
 	end
+end
+
+function UpdateHighlights()
+	for _, v in pairs(Players:GetChildren()) do
+		if v ~= LP and v.Character and v.Character:FindFirstChild("Highlight") then
+			Highlight = v.Character:FindFirstChild("Highlight")
+			if v.Name == Sheriff and IsAlive(v) then
+				Highlight.FillColor = Color3.fromRGB(0, 0, 225)
+			elseif v.Name == Murder and IsAlive(v) then
+				Highlight.FillColor = Color3.fromRGB(225, 0, 0)
+			elseif v.Name == Hero and IsAlive(v) and not IsAlive(game.Players[Sheriff]) then
+				Highlight.FillColor = Color3.fromRGB(255, 250, 0)
+			else
+				Highlight.FillColor = Color3.fromRGB(0, 225, 0)
+			end
+		end
+	end
+end	
+
+function IsAlive(Player)
+	for i, v in pairs(roles) do
+		if Player.Name == i then
+			if not v.Killed and not v.Dead then
+				return true
+			else
+				return false
+			end
+		end
+	end
+end
+
+
+
+RunService.RenderStepped:connect(function()
+	roles = ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer()
+	for i, v in pairs(roles) do
+		if v.Role == "Murderer" then
+			Murder = i
+		elseif v.Role == 'Sheriff'then
+			Sheriff = i
+		elseif v.Role == 'Hero'then
+			Hero = i
+		end
+	end
+	CreateHighlight()
+	UpdateHighlights()
 end)
