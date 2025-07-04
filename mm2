@@ -191,7 +191,8 @@ end)
 local murder
 local highlight = Instance.new("Highlight")
 local esps = false
-
+local innocent
+local sherif
 local localplayer = players.LocalPlayer
 local espss = Instance.new("Highlight")
 
@@ -204,6 +205,10 @@ espbutton.MouseButton1Click:Connect(function()
 			for _, items in item do
 				if items.Name == "Knife" then
 					murder = player.Name	
+				elseif items.Name ~= "Knife" and items.Name ~= "Gun" then
+					innocent = player.Name
+				elseif items.Name == "Gun" then
+					sherif = player.Name
 				end	
 			end	
 			if murder == player.Name then
@@ -218,7 +223,8 @@ espbutton.MouseButton1Click:Connect(function()
 				esps = true
 				espbutton.BackgroundColor = BrickColor.Green()
 				espbutton.Text = "Esp on"
-			else
+				murder = nil
+			elseif innocent == player.Name then
 				local clone = espss:Clone()
 				clone.Name = "Esp"
 				clone.Parent = player.Character
@@ -230,6 +236,20 @@ espbutton.MouseButton1Click:Connect(function()
 				esps = true
 				espbutton.BackgroundColor = BrickColor.Green()
 				espbutton.Text = "Esp on"
+				innocent = nil
+			elseif sherif == player.Name then
+				local clone = espss:Clone()
+				clone.Name = "Esp"
+				clone.Parent = player.Character
+				clone.Adornee = player.Character
+				clone.FillColor = Color3.new(0.00784314, 0.545098, 1)
+				clone.OutlineColor = Color3.new(0, 0, 0)
+				clone.FillTransparency = 0.5
+				clone.OutlineTransparency = 0
+				esps = true
+				espbutton.BackgroundColor = BrickColor.Green()
+				espbutton.Text = "Esp on"
+				sherif = nil
 			end
 		end	
 	else
@@ -245,5 +265,24 @@ espbutton.MouseButton1Click:Connect(function()
 				espbutton.BackgroundColor = BrickColor.Red()
 			end
 		end
+	end
+end)
+
+players.PlayerAdded:Connect(function()
+	if esps == true then
+		local all = players:GetPlayers()
+		for _, player in all do
+				local clone = espss:Clone()
+				clone.Name = "Esp"
+				clone.Parent = player.Character
+				clone.Adornee = player.Character
+				clone.FillColor = Color3.new(0.101961, 1, 0.00392157)
+				clone.OutlineColor = Color3.new(0, 0, 0)
+				clone.FillTransparency = 0.5
+				clone.OutlineTransparency = 0
+				esps = true
+				espbutton.BackgroundColor = BrickColor.Green()
+				espbutton.Text = "Esp on"
+		end	
 	end
 end)
