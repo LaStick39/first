@@ -274,21 +274,19 @@ espbutton.MouseButton1Click:Connect(function()
 	end
 end)
 
-players.PlayerAdded:Connect(function()
+players.PlayerAdded:Connect(function(plr)
 	if esps == true then
-		local all = players:GetPlayers()
-		for _, player in all do
-				local clone = espss:Clone()
-				clone.Name = "Esp"
-				clone.Parent = player.Character
-				clone.Adornee = player.Character
-				clone.FillColor = Color3.new(0.101961, 1, 0.00392157)
-				clone.OutlineColor = Color3.new(0, 0, 0)
-				clone.FillTransparency = 0.5
-				clone.OutlineTransparency = 0
-				esps = true
-				espbutton.BackgroundColor = BrickColor.Green()
-				espbutton.Text = "Esp on"
-		end	
+		local character = plr.Character
+		local clone = espss:Clone()
+		clone.Name = "Esp"
+		clone.Parent = character
+		clone.Adornee = character
+		clone.FillColor = Color3.new(0.101961, 1, 0.00392157)
+		clone.OutlineColor = Color3.new(0, 0, 0)
+		clone.FillTransparency = 0.5
+		clone.OutlineTransparency = 0
+		esps = true
+		espbutton.BackgroundColor = BrickColor.Green()
+		espbutton.Text = "Esp on"
 	end
 end)
