@@ -273,7 +273,6 @@ espbutton.MouseButton1Click:Connect(function()
 		end
 	end
 end)
-
 players.PlayerAdded:Connect(function(plr)
 	if esps == true then
 		local character = plr.Character
