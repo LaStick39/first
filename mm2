@@ -205,12 +205,13 @@ espbutton.MouseButton1Click:Connect(function()
 			for _, items in item do
 				if items.Name == "Knife" then
 					murder = player.Name	
-				elseif items.Name ~= "Knife" and items.Name ~= "Gun" then
-					innocent = player.Name
 				elseif items.Name == "Gun" then
 					sherif = player.Name
 				end	
-			end	
+			end
+			if murder == nil and sherif == nil then
+				innocent = player.Name
+			end
 			if murder == player.Name then
 				local clone = espss:Clone()
 				clone.Name = "Esp"
