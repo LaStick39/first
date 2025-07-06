@@ -259,6 +259,7 @@ local function updateesp()
 end
 
 players.PlayerAdded:Connect(function(plr)
+	local humanoid:Humanoid = plr.Character:FindFirstChild("Humanoid")
 	if esps == true then
 		local player = plr
 		local clone = espss:Clone()
@@ -273,6 +274,24 @@ players.PlayerAdded:Connect(function(plr)
 		espbutton.BackgroundColor = BrickColor.Green()
 		espbutton.Text = "Esp on"
 	end	
+	while true do
+		task.wait(1)
+		if humanoid.Health<0 and esps == true then
+			task.wait(3)
+			local player = plr
+			local clone = espss:Clone()
+			clone.Name = "Esp"
+			clone.Parent = player.Character
+			clone.Adornee = player.Character
+			clone.FillColor = Color3.new(0.101961, 1, 0.00392157)
+			clone.OutlineColor = Color3.new(0, 0, 0)
+			clone.FillTransparency = 0.5
+			clone.OutlineTransparency = 0
+			esps = true
+			espbutton.BackgroundColor = BrickColor.Green()
+			espbutton.Text = "Esp on"
+		end
+	end
 end)
 
 espbutton.MouseButton1Click:Connect(function()
