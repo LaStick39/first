@@ -203,74 +203,79 @@ local espss = Instance.new("Highlight")
 
 
 local function createesp()
-	if esps == false and not players.LocalPlayer.Character:FindFirstChild("Esp") then
-		local player = players.LocalPlayer
-	
-		local all = players:GetPlayers()
-		for _, player in all do
-				local clone = espss:Clone()
-				clone.Name = "Esp"
-				clone.Parent = player.Character
-				clone.Adornee = player.Character
-				clone.FillColor = Color3.new(0.101961, 1, 0.00392157)
-				clone.OutlineColor = Color3.new(0, 0, 0)
-				clone.FillTransparency = 0.5
-				clone.OutlineTransparency = 0
-				esps = true
-				espbutton.BackgroundColor = BrickColor.Green()
-				espbutton.Text = "Esp on"
-		end	
-	else
-			local players = players:GetPlayers()
-			for _, player in players do
-				local character = player.Character
-					local esp = character:FindFirstChild("Esp")
-					if esp then
-						esp:Destroy()
-						esps = false
-						espbutton.BackgroundColor = BrickColor.Red()
-						espbutton.Text = "Esp off"
-					end	
-			end
+	local players2 = players:GetPlayers()
+	for _, a in players2 do
+		if esps == false and not a.Character:FindFirstChild("Esp") then
+		
+			local all = players:GetPlayers()
+			for _, player in all do
+					local clone = espss:Clone()
+					clone.Name = "Esp"
+					clone.Parent = player.Character
+					clone.Adornee = player.Character
+					clone.FillColor = Color3.new(0.101961, 1, 0.00392157)
+					clone.OutlineColor = Color3.new(0, 0, 0)
+					clone.FillTransparency = 0.5
+					clone.OutlineTransparency = 0
+					esps = true
+					espbutton.BackgroundColor = BrickColor.Green()
+					espbutton.Text = "Esp on"
+			end	
+		else
+				local players = players:GetPlayers()
+				for _, player in players do
+					local character = player.Character
+						local esp = character:FindFirstChild("Esp")
+						if esp then
+							esp:Destroy()
+							esps = false
+							espbutton.BackgroundColor = BrickColor.Red()
+							espbutton.Text = "Esp off"
+						end	
+				end
+		end		
 	end		
 end
 
 
 local function updateesp()
-	if esps == true and players.LocalPlayer.Character:FindFirstChild("Esp") then
-		local esp = players.LocalPlayer.Character:FindFirstChild("Esp")
-		local items = players.LocalPlayer.Backpack:GetChildren()
-		for _, item in items do
-			if item.Name == "Knife" then
-				esp.FillColor = Color3.new(1, 0.0235294, 0.0901961)
-				murder = players.LocalPlayer.Name
-			elseif item.Name == "Gun" then
-				esp.FillColor = Color3.new(0.0431373, 0.0117647, 1)
-				sherif = players.LocalPlayer.Name
+	local players2 = players:GetPlayers()
+	for _, a in players2 do
+		if not a.Character:FindFirstChild("Esp") then
+		else	
+			if esps == true and a.Character:FindFirstChild("Esp") then
+				local esp = a.Character:FindFirstChild("Esp")
+				local items = a.Backpack:GetChildren()
+				for _, item in items do
+					if item.Name == "Knife" then
+						esp.FillColor = Color3.new(1, 0.0235294, 0.0901961)
+						murder = a.Name
+					elseif item.Name == "Gun" then
+						esp.FillColor = Color3.new(0.0431373, 0.0117647, 1)
+						sherif = a.Name
+					end
+				end
+				
 			end
-		end
-		if murder == nil and sherif == nil then
-			esp.FillColor = Color3.new(0.0117647, 1, 0.0784314)
 		end
 	end
 end
 
-
+players.PlayerAdded:Connect(function()
+	if esps == true then
+		createesp()
+	end	
+end)
 
 espbutton.MouseButton1Click:Connect(function()
 	createesp()
 end)
 
-players.PlayerAdded:Connect(function(plr)
-	if esps == true then
-		createesp()
-	end
-end)
-
 task.spawn(function()
-	while esps == true do
-		createesp()
-		updateesp()
+	while true do
 		task.wait(1)
+		if esps == true then
+			updateesp()
+		end
 	end
 end)
