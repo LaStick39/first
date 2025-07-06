@@ -276,7 +276,7 @@ players.PlayerAdded:Connect(function(plr)
 	end	
 	while true do
 		task.wait(1)
-		if humanoid.Health<0 and esps == true then
+		if humanoid.Health == 0 and esps == true then
 			task.wait(3)
 			local player = plr
 			local clone = espss:Clone()
