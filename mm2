@@ -259,7 +259,6 @@ local function updateesp()
 end
 
 players.PlayerAdded:Connect(function(plr)
-	local humanoid:Humanoid = plr.Character:FindFirstChild("Humanoid")
 	if esps == true then
 		local player = plr
 		local clone = espss:Clone()
