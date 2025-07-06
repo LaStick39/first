@@ -299,10 +299,12 @@ espbutton.MouseButton1Click:Connect(function()
 end)
 
 task.spawn(function()
-	while true do
-		task.wait(1)
-		if esps == true then
-			updateesp()
+	task.spawn(function()	
+		while true do
+			task.wait(1)
+			if esps == true then
+				updateesp()
+			end
 		end
-	end
+	end)
 end)
