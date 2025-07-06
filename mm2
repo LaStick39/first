@@ -205,7 +205,7 @@ local espss = Instance.new("Highlight")
 local function createesp()
 	local players2 = players:GetPlayers()
 	for _, a in players2 do
-		if esps == false and not a.Character:FindFirstChild("Esp") then
+		if esps == false then
 		
 			local all = players:GetPlayers()
 			for _, player in all do
@@ -225,8 +225,6 @@ local function createesp()
 				local players = players:GetPlayers()
 				for _, player in players do
 					local character = player.Character
-					if not character:FindFirstChild("Esp") then
-					else
 						local esp = character:FindFirstChild("Esp")
 						if esp then
 							esp:Destroy()
@@ -234,7 +232,6 @@ local function createesp()
 							espbutton.BackgroundColor = BrickColor.Red()
 							espbutton.Text = "Esp off"
 						end	
-					end	
 				end
 		end		
 	end		
@@ -243,9 +240,7 @@ end
 
 local function updateesp()
 	local players2 = players:GetPlayers()
-	for _, a in players2 do
-		if not a.Character:FindFirstChild("Esp") then
-		else	
+	for _, a in players2 do	
 			if esps == true and a.Character:FindFirstChild("Esp") then
 				local esp = a.Character:FindFirstChild("Esp")
 				local items = a.Backpack:GetChildren()
@@ -260,7 +255,6 @@ local function updateesp()
 				end
 				
 			end
-		end
 	end
 end
 
