@@ -221,17 +221,19 @@ local function createesp()
 				espbutton.Text = "Esp on"
 		end	
 	else
-		if players.LocalPlayer.Character:FindFirstChild("Esp") then
-			local player = players.LocalPlayer
-			local character = player.Character
-			local esp = character:FindFirstChild("Esp")
-			if esp then
-				esp:Destroy()
-				esps = false
-				espbutton.BackgroundColor = BrickColor.Red()
-				espbutton.Text = "Esp off"
+			local players = players:GetPlayers()
+			for _, player in players do
+				local character = player.Character
+				if character:FindFirstChild("Esp") then 
+					local esp = character:FindFirstChild("Esp")
+					if esp then
+						esp:Destroy()
+						esps = false
+						espbutton.BackgroundColor = BrickColor.Red()
+						espbutton.Text = "Esp off"
+					end	
+				end	
 			end
-		end
 	end		
 end
 
